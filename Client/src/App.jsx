@@ -14,10 +14,12 @@ const App = () => {
 
 	useEffect(() => {
 		const storedUser = localStorage.getItem("Extrasize");
+
 		if (storedUser) {
 			try {
 				const parsedUser = JSON.parse(storedUser);
 				setUser(parsedUser);
+				console.log("Parsed User:", parsedUser);
 			} catch (error) {
 				console.error("Error parsing stored user data", error);
 				localStorage.removeItem("Extrasize");
@@ -40,9 +42,9 @@ const App = () => {
 			try {
 				if (user) {
 					const data = {
-						refresh_token: "c01a0fc2b085af5d0e23d5b80cb54381f9a7af48",
-						client_id: "116565",
-						client_secret: "eea2a8431051132f247966fad9bd7f15562f825e",
+						refresh_token: `${user?.refreshReadToken}`,
+						client_id: `${user?.stravaClientId}`,
+						client_secret: `${user?.stravaClientSecret}`,
 					};
 
 					const response = await axios.post(

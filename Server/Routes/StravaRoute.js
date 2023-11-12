@@ -1,6 +1,8 @@
 const express = require("express");
 const axios = require("axios");
 const router = express.Router();
+const { open } = require("sqlite");
+const sqlite3 = require("sqlite3");
 
 const authLink = "https://www.strava.com/oauth/token";
 
@@ -192,6 +194,38 @@ router.post("/activity", async (req, res) => {
 				.status(500)
 				.json({ error: "Activity ID not received from Strava." });
 		}
+
+		// store activity in database, create a new table if it doesn't exist
+		const db = await open({
+			filename: dbPath,
+			driver: sqlite3.Database,
+		});
+
+		await createActivitiesTable();
+
+		const activity = await db.get(
+			"SELECT * FROM activities WHERE activity_id = ?",
+			[data.id]
+		);
+
+		if (!activity) {
+			await db.run(
+				"INSERT INTO activities (activity_id, name, type, start_date_local, elapsed_time, distance, location_city, location_state, location_country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				[
+					data.id,
+					data.name,
+					data.type,
+					data.start_date_local,
+					data.elapsed_time,
+					data.distance,
+					data.location_city,
+					data.location_state,
+					data.location_country,
+				]
+			);
+		}
+
+		return res.status(200).json({ activity_id: data.id });
 	} catch (error) {
 		// Handle errors
 		if (error.response) {

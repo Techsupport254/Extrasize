@@ -17,20 +17,20 @@ const createUsersTable = async () => {
 
 	await db.exec(
 		`CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE,
-            name TEXT,
-            email TEXT UNIQUE,
-            password TEXT,
-            stravaKey TEXT,
-            mapKey TEXT,
-            calendarKey TEXT,
-			token TEXT,
-			stravaClientId TEXT,
-			stravaClientSecret TEXT,
-			refreshReadToken TEXT,
-			refreshWriteToken TEXT,
-        )`
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT UNIQUE,
+      name TEXT,
+      email TEXT UNIQUE,
+      password TEXT,
+      stravaKey TEXT,
+      mapKey TEXT,
+      calendarKey TEXT,
+      token TEXT,
+      stravaClientId TEXT,
+      stravaClientSecret TEXT,
+      refreshReadToken TEXT,
+      refreshWriteToken TEXT
+    )`
 	);
 };
 
@@ -68,7 +68,7 @@ router.post("/register", async (req, res) => {
 		const hashedPassword = await bcrypt.hash(password, 10);
 
 		await db.run(
-			"INSERT INTO users (username, name, email, password, stravaKey, mapKey, calendarKey,stravaClientId,stravaClientSecret,refreshReadToken,refreshWriteToken,) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			"INSERT INTO users (username, name, email, password, stravaKey, mapKey, calendarKey, stravaClientId, stravaClientSecret, refreshReadToken, refreshWriteToken) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			[
 				userName,
 				name,
@@ -95,16 +95,16 @@ router.post("/register", async (req, res) => {
 			message: "User registered successfully",
 			token: token,
 			user: {
-				name: name,
-				email: email,
-				stravaKey: stravaKey,
-				mapKey: mapKey,
-				calendarKey: calendarKey,
-				userName: userName,
-				stravaClientId: stravaClientId,
-				stravaClientSecret: stravaClientSecret,
-				refreshReadToken: refreshReadToken,
-				refreshWriteToken: refreshWriteToken,
+				name,
+				email,
+				stravaKey,
+				mapKey,
+				calendarKey,
+				username,
+				stravaClientId,
+				stravaClientSecret,
+				refreshReadToken,
+				refreshWriteToken,
 			},
 		});
 	} catch (error) {
@@ -148,10 +148,11 @@ router.post("/login", async (req, res) => {
 			user: {
 				name: user.name,
 				email: user.email,
-				stravaKey: user.stravaKey,
-				mapKey: user.mapKey,
-				calendarKey: user.calendarKey,
-				userName: user.username,
+				username: user.username,
+				stravaClientId: user.stravaClientId,
+				stravaClientSecret: user.stravaClientSecret,
+				refreshReadToken: user.refreshReadToken,
+				refreshWriteToken: user.refreshWriteToken,
 			},
 		});
 	} catch (error) {

@@ -79,9 +79,9 @@ const Record = ({ user, close, date }) => {
 			try {
 				if (user) {
 					const data = {
-						refresh_token: "424efbd722e854d35561ad3548d13f588801f431",
-						client_id: "116565",
-						client_secret: "eea2a8431051132f247966fad9bd7f15562f825e",
+						refresh_token: `${user?.refreshWriteToken}`,
+						client_id: `${user?.stravaClientId}`,
+						client_secret: `${user?.stravaClientSecret}`,
 					};
 
 					const response = await axios.post(

@@ -38,7 +38,11 @@ const initDB = async () => {
             stravaKey TEXT,
             mapKey TEXT,
             calendarKey TEXT,
-			token TEXT
+			token TEXT,
+			stravaClientId TEXT,
+      stravaClientSecret TEXT,
+      refreshReadToken TEXT,
+      refreshWriteToken TEXT
         )`
 			);
 
